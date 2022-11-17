@@ -19,46 +19,35 @@
        для обновления сущности воспользуйтесь PUT запросом https://jsonplaceholder.typicode.com/posts/1. Обработайте ответ
        и выведите информацию о ошибке или об успешно завершенной операции.
        */
-const form = document.createElement("form");
-let url = "https://jsonplaceholder.typicode.com/posts/1";
+const form = document.forms[0];
+const inputTitle = form.elements[0];
+const inputBody = form.elements[1];
+const button = form.elements[2];
 
-const inputTitle = document.createElement("input");
-inputTitle.classList.add("title");
-inputTitle.style.display = "block";
 
-const inputBody = document.createElement("input");
-inputBody.classList.add("body");
-inputBody.style.display = "block";
 
-const inputButton = document.createElement("input");
-inputButton.setAttribute("type", "submit");
 
-form.appendChild(inputTitle);
-form.appendChild(inputBody);
-form.appendChild(inputButton);
-document.body.append(form);
-
-inputButton.addEventListener("click", function () {
-    
-      let form = {
-            id: 1,
+button.addEventListener("click", function () {
+      let url = "https://jsonplaceholder.typicode.com/posts/1";
+      
+      let data = {
             title: inputTitle.value,
             body: inputBody.value,
-            userId: 1
+            
       };
 
       fetch(url, {
             method: 'PUT',
-            body: JSON.stringify(form),
+            body: JSON.stringify(data),
             headers: {
                   'Content-type': 'application/json; charset=UTF-8',
             }
 
       })
-            .then(response => response.text())
-            .then(text => {
-                  inputTitle.value = text.title;
-                  inputBody.value = text.body;
+            .then(response => response.json())
+            .then(json => {
+                  inputTitle.value = json.title;
+                  inputBody.value = json.body;
             })
             .catch(error => alert(error.message));
             
